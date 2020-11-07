@@ -5,7 +5,7 @@ include 'style.html';
 <body>
      <div class="flex-center position-ref full-height">
                 <div class="top-right home">
-                        <a href="view.php?name="$_GET['name']"">View</a>
+                        <a href="view.php?name='<?$_GET['name']?>'">View</a>
                         <a href="index.php">Login</a>
                         <a href="signup.php">Register</a>
                 </div>
@@ -46,12 +46,14 @@ if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
     $password = $_POST['password'];
 
-    $method = 'DES-ECB';
+    
+
+
+	if ($name && $password) {
+        $method = 'DES-ECB';
     $options ='0';
     $result = openssl_encrypt($password, $method,  $options);
-var_dump($result);
-
-	if ($name && $result) {
+    var_dump($result);
 		$sql = "select * from user_table where User_name = '$name' and User_password='$result'";
         $zzz = mysqli_query($db, $sql);
 var_dump($zzz);
