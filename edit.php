@@ -76,5 +76,6 @@ if (isset($_POST['submit'])) {
 } else {
 	echo '<div class="success">Click <strong>Send</strong> when you\'re done.</div>';
 }
+
 //something wrong.
 ?>
