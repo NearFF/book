@@ -1,8 +1,13 @@
 <title>All messages</title>
 <?php
 include 'style.html';
-$name = $_GET['name'];
+$name = '';
+if (!empty($_GET['name'])) {
+    $name = $_GET['name'];
+}
+
 ?>
+post
 <body>
 	     <div class="flex-center position-ref full-height">
 	<div class="top-right home">
@@ -23,17 +28,24 @@ if (!$name) {
 session_start();
 include "db.php";
 $sql = "select * from guestbook";
-$result = mysqli_query($db, $sql);
-$_SESSION['name'] = $name = $_GET['name'];
+$result = mysqli_query($db, $sql); 
+//var_dump($result);
+//exit;
+if (!empty($_GET['name'])) {
+    $_SESSION['name'] = $name = $_GET['name'];
+}
+
 //從資料庫中撈留言紀錄並顯示出來
 while ($row = mysqli_fetch_assoc($result)) {
+//var_dump($row);
+//exit;
 	echo "<br>Visitor Name：" . $row['Guest_name'];
-	echo "<br>Subject：" . $row['Guest_subject'];
+    echo "<br>Subject：" . $row['Guest_subject'];
 	echo "<br>Content：" . nl2br($row['Guest_content']) . "<br>";
 	if ($name == $row['Guest_name']) {  //若登入者名稱和留言者名稱一致，顯示出編輯和刪除的連結
-		echo ' 
-		<a href=" edit.php?no=' . $row['no'] . '&name=' . $name . '">
-		Edit message content</a>&nbsp|&nbsp<a href="delete.php?no=' . $row['no'] . '">Delete the message</a><br>';
+		echo '
+		<a href=" edit.php?id=' . $row['id'] . '&name=' . $name . '">
+		Edit message content</a>&nbsp|&nbsp<a href="delete.php?no=' . $row['id'] . '">Delete the message</a><br>';
 	}
 	echo "Time：" . $row['Guest_time'] . "<br>";
 	echo "<hr>";
