@@ -7,7 +7,7 @@ if (!empty($_GET['name'])) {
 }
 
 ?>
-post
+
 <body>
 	     <div class="flex-center position-ref full-height">
 	<div class="top-right home">
@@ -15,7 +15,7 @@ post
 if (!$name) {
 	echo '<a href="index.php">Log in</a>';
 } else {
-	echo "<a href='board.php?name=" . $name . "'>Write some messages</a>";
+	echo "<a href='board.php?name=" . $name . "Write some messages</a>";
 	echo '<a href="index.php">Log out</a>';
 }?>
      </div>
@@ -45,7 +45,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	if ($name == $row['Guest_name']) {  //若登入者名稱和留言者名稱一致，顯示出編輯和刪除的連結
 		echo '
 		<a href=" edit.php?id=' . $row['id'] . '&name=' . $name . '">
-		Edit message content</a>&nbsp|&nbsp<a href="delete.php?no=' . $row['id'] . '">Delete the message</a><br>';
+		Edit message content</a>&nbsp|&nbsp<a href="delete.php?id=' . $row['id'] . '">Delete the message</a><br>';// 在這邊啦
 	}
 	echo "Time：" . $row['Guest_time'] . "<br>";
 	echo "<hr>";

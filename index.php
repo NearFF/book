@@ -53,10 +53,10 @@ if (isset($_POST['submit'])) {
         $method = 'DES-ECB';
     $options ='0';
     $result = openssl_encrypt($password, $method,  $options);
-    var_dump($result);
+    //var_dump($result);
 		$sql = "select * from user_table where User_name = '$name' and User_password='$result'";
         $zzz = mysqli_query($db, $sql);
-var_dump($zzz);
+//var_dump($zzz);
 
 		$rows = mysqli_num_rows($zzz);
 		if ($rows) {
