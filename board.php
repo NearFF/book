@@ -56,6 +56,7 @@ if (isset($_POST['submit'])) {
     //$Guest_time = $_POST['Guest_time'];
 	$sql = "INSERT guestbook(Guest_name	, Guest_subject, Guest_content, Guest_time) VALUES ('$Guest_name', '$Guest_subject', '$Guest_content', now())";
 
+
 	if (!mysqli_query($db, $sql)) {
 		die(mysqli_error());
 	} else {

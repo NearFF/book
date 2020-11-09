@@ -1,5 +1,6 @@
 <title>Sign up</title>
 <?php
+
 include 'style.html';
 ?>
 <body>
@@ -41,27 +42,37 @@ include 'style.html';
 </html>
 <!--留言者按下Signup後接著會執行以下程式碼-->
 <?php
+session_start();
 //header("Content-Type: text/html; charset=utf8");
 if (isset($_POST['submit'])) { 
 	include 'db.php';
 	$name = $_POST['name'];
     $password = $_POST['password'];
 
-
-   
-
-	if ($name && $password) {
+if ($name && $password) {
 		$sql = "select * from user_table where User_name = '$name'";
 		$aaa = mysqli_query($db, $sql);
-		$rows = mysqli_num_rows($aaa);
-        if (!$rows) { //若這個username還未被使用過
-            
-   //$date ='password';
+        $rows = mysqli_num_rows($aaa);
+
+
+if (ini_get('name'))
+{
+    foreach ($_SESSION as $key=>$name)
+    {
+        if (isset($GLOBALS[$key]))
+            unset($GLOBALS[$key]);
+    }
+}
+
+
+
+if (!$rows) { //若這個username還未被使用過
+    //$date ='password';
         $method = 'DES-ECB';
    //$passwd = '134679852';
         $options ='0';
         $result = openssl_encrypt($password, $method,  $options);
-    var_dump($result);
+    
 
             $sql = "insert user_table(User_id,User_name,User_password) values (null,'$name','$result')";         
             mysqli_query($db, $sql);            

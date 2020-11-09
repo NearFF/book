@@ -40,26 +40,33 @@ include 'style.html';
 </body>
 </html>
 <?php
+session_start();
 //header("Content-Type: text/html; charset=utf8");
 if (isset($_POST['submit'])) {
 	include 'db.php';
 	$name = $_POST['name'];
     $password = $_POST['password'];
+  
+if ($name && $password) {
 
-    
+if (ini_get('name'))
+{
+    foreach ($_SESSION as $key=>$name)
+    {
+        if (isset($GLOBALS[$key]))
+            unset($GLOBALS[$key]);
+    }
+}
 
-
-	if ($name && $password) {
-        $method = 'DES-ECB';
+    $method = 'DES-ECB';
     $options ='0';
     $result = openssl_encrypt($password, $method,  $options);
-    //var_dump($result);
-		$sql = "select * from user_table where User_name = '$name' and User_password='$result'";
-        $zzz = mysqli_query($db, $sql);
-//var_dump($zzz);
+	$sql = "select * from user_table where User_name = '$name' and User_password='$result'";
+    $zzz = mysqli_query($db, $sql);
+    $rows = mysqli_num_rows($zzz);
+    
 
-		$rows = mysqli_num_rows($zzz);
-		if ($rows) {
+if ($rows) {
 			echo '<div class="sucess">welcome！ </div>';
 			echo "
 			<script>

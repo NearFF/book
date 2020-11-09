@@ -15,7 +15,7 @@ if (!empty($_GET['name'])) {
 if (!$name) {
 	echo '<a href="index.php">Log in</a>';
 } else {
-	echo "<a href='board.php?name=" . $name . "Write some messages</a>";
+	echo "<a href='board.php?name=" . $name . "'>Write some messages</a>";
 	echo '<a href="index.php">Log out</a>';
 }?>
      </div>
