@@ -1,22 +1,38 @@
+<?php
+session_start();
+?>
 <title>All messages</title>
 <?php
 include 'style.html';
-$name = '';
-if (!empty($_GET['name'])) {
-    $name = $_GET['name'];
+// $name = '';
+// if (!empty($_GET['name'])) {
+//     $name = $_GET['name'];
+// }
+// var_dump($_SESSION);
+// exit;
+if
+(
+    empty($_SESSION['name'])
+    || empty($_SESSION['id'])
+    || $_SESSION['expire_ts'] < time() 
+) 
+{
+    header("Location: index.php");
+	exit;
 }
+$name = $_SESSION['name'];
 
 ?>
 
 <body>
 	     <div class="flex-center position-ref full-height">
 	<div class="top-right home">
-                <?php
+<?php
 if (!$name) {
 	echo '<a href="index.php">Log in</a>';
 } else {
 	echo "<a href='board.php?name=" . $name . "'>Write some messages</a>";
-	echo '<a href="index.php">Log out</a>';
+	echo '<a href="logout.php">Logout</a>';
 }?>
      </div>
 
@@ -25,7 +41,7 @@ if (!$name) {
 </div>
 <div class="note full-height">
 <?php
-session_start();
+
 include "db.php";
 $sql = "select * from guestbook";
 $result = mysqli_query($db, $sql); 

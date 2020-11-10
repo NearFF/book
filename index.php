@@ -1,3 +1,14 @@
+<?php
+session_start();
+if (
+    !empty($_SESSION['name'])
+    && !empty($_SESSION['id'])
+    && $_SESSION['expire_ts'] > time()
+) {
+    header("Location: view.php");
+	exit;
+}
+?>
 <title>Login</title>
 <?php
 include 'style.html';
@@ -40,51 +51,51 @@ include 'style.html';
 </body>
 </html>
 <?php
-session_start();
+//session_start();
 //header("Content-Type: text/html; charset=utf8");
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit'])) { 
 	include 'db.php';
 	$name = $_POST['name'];
     $password = $_POST['password'];
   
-if ($name && $password) {
+    if ($name && $password) {
 
-if (ini_get('name'))
-{
-    foreach ($_SESSION as $key=>$name)
-    {
-        if (isset($GLOBALS[$key]))
-            unset($GLOBALS[$key]);
+        $method = 'DES-ECB';
+        $options ='0';
+        // 將使用者密碼在加密
+        $result = openssl_encrypt($password, $method,  $options);
+        $sql = "select * from user_table where User_name = '$name' and User_password='$result'";
+        $rows = mysqli_query($db, $sql);
+        // $rows = mysqli_num_rows($zzz);
+
+        while ($row = mysqli_fetch_array($rows)) {
+            if ($row) {
+                // 將使用者加到session
+                $_SESSION['id'] = $row['User_id'];
+                $_SESSION['name'] = $row['User_name'];
+                $_SESSION['expire_ts'] = time() + 60;
+                        echo '<div class="sucess">welcome！ </div>';
+                        echo "
+                        <script>
+                        setTimeout(function(){window.location.href='view.php';},600);
+                        </script>";
+                
+            } else {
+                echo '<div class="warning">Wrong Username or Password！</div>';
+            }
+        }
+        
+
+
+    } else {
+
+        echo '<div class="warning">Incompleted form！ </div>';
+        echo "
+    <script>
+    setTimeout(function(){window.location.href='login.php';},2000);
+    </script>";
     }
-}
-
-    $method = 'DES-ECB';
-    $options ='0';
-    $result = openssl_encrypt($password, $method,  $options);
-	$sql = "select * from user_table where User_name = '$name' and User_password='$result'";
-    $zzz = mysqli_query($db, $sql);
-    $rows = mysqli_num_rows($zzz);
-    
-
-if ($rows) {
-			echo '<div class="sucess">welcome！ </div>';
-			echo "
-			<script>
-			setTimeout(function(){window.location.href='view.php?name=" . $name . "';},600);
-			</script>";
-	
-		} else {
-			echo '<div class="warning">Wrong Username or Password！</div>';
-		}
-	} else {
-
-		echo '<div class="warning">Incompleted form！ </div>';
-		echo "
-<script>
-setTimeout(function(){window.location.href='login.php';},2000);
-</script>";
-	}
-	mysqli_close();
+    mysqli_close($db);
 
 }
 
